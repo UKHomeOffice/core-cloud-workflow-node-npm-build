@@ -1,0 +1,43 @@
+name: Self Test - npm build action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test-valid:
+    name: Test - Valid Node npm build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run npm build (valid config)
+        uses: ./
+        with:
+          working_directory: "tests/test-build-valid"
+
+  test-invalid:
+    name: Test - Invalid Node npm build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run npm build (invalid config)
+        id: build
+        uses: ./
+        continue-on-error: true
+        with:
+          working_directory: "tests/test-build-invalid"
+
+      - name: Assert failure
+        run: |
+          if [ "${{ steps.build.outputs.npm_build_exit_code }}" -eq 0 ]; then
+            echo "Expected npm build to fail but it succeeded."
+            exit 1
+          fi
