@@ -1,6 +1,6 @@
 # Core Cloud Workflow Node npm build
 
-A GitHub Actions workflow for running npm build on Node.js projects to identify and report code quality issues.
+A GitHub Actions workflow for running npm build on Node.js projects to build Node applications.
 
 ## Overview
 
